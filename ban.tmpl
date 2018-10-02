@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>【非公式】中部電力 遠州地方 停電情報 {{.Ken}}/{{.Shi}}/{{.Cho}}{{if ne .Banchi ""}}/{{.Banchi}}{{end}}</title>
+</head>
+<style>
+th,td{
+	border:solid 1px #aaaaaa;
+	padding: 5px;
+}
+</style>
+<body>
+<h1>【非公式】中部電力 遠州地方 停電情報 {{.Ken}}/{{.Shi}}/{{.Cho}}{{if ne .Banchi ""}}/{{.Banchi}}{{end}}</h1>
+<p><a href="http://teiden.chuden.jp/p/sizuoka.html">中部電力の遠州地方の停電情報</a>を解析して町名毎に表示できるようにしています。</p>
+<p>浜松、細江、浜北、掛川、磐田営業所の内容に対応しています。</p>
+<h2>停電戸数合計：{{.Hassei}}、現在停電戸数合計：{{.Genzai}}、更新時間：{{.Date}}</h2>
+<h2>{{.Ken}}/{{.Shi}}/{{.Cho}}{{if ne .Banchi ""}}/{{.Banchi}}{{end}}</h2>
+<table>
+	<tr>
+		<th>エリア</th>
+		<th>停電発生日時</th>
+		<th>情報更新日時</th>
+		<th>停電戸数</th>
+		<th>現在停電戸数</th>
+		<th>復旧見込み日時</th>
+	</tr>
+{{range $key, $it := .Item -}}
+	<tr>
+		<td>
+			{{range $key2, $it2 := $it.ChomeiInfo -}}
+			{{$it2.Address2}}/{{$it2.Address3}}{{if ne $it2.Address4 ""}}/{{$it2.Address4}}{{end}}<br>
+			{{end -}}
+			の一部
+		</td>
+		<td>{{$it.TeidenHasseiDate}}</td>
+		<td>{{$it.ZensoDate}}</td>
+		<td>{{$it.HasseijiTeidenKosu}}</td>
+		<td>{{$it.GenzaiTeidenKosu}}</td>
+		<td>{{$it.FukkyuMikomiDate}}</td>
+	</tr>
+{{end -}}
+</table>
+<table>
+{{$this := . -}}
+{{range $key, $it := .BanchiList -}}
+	<tr>
+		<td><a href="/{{$this.Ken}}/{{$this.Shi}}/{{$this.Cho}}/{{$key}}">{{$key}}</a></td>
+	</tr>
+{{end -}}
+</table>
+</body>
+</html>
